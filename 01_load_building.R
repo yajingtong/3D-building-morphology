@@ -47,7 +47,7 @@ all_cities_buildings <- map_dfr(1:nrow(centers), function(i) {
   message("\n=== Processing city: ", city_name, " ===")
   
 
-  # 1) Compute distance to all tile centroids
+  #   Compute distance to all tile centroids
 
   dists <- sapply(tile_info, function(ti) {
     st_distance(city_geom, ti$centroid)
@@ -60,7 +60,7 @@ all_cities_buildings <- map_dfr(1:nrow(centers), function(i) {
           " (", round(as.numeric(dists[nearest_idx]), 0), " m )")
   
 
-  # 2) Load the  building tile
+  #   Load the  building tile
 
   b <- st_read(nearest_file, quiet = TRUE, options = "PROMOTE_TO_MULTI=YES")
   
@@ -76,7 +76,7 @@ all_cities_buildings <- map_dfr(1:nrow(centers), function(i) {
   message("Attributes found: ", paste(names(b), collapse = ", "))
   
 
-  # 3) Crop buildings within radius (25 km)
+  #   Crop buildings within radius (25 km)
 
   max_dist <- 250 * 100  # 25 km
   city_buffer <- st_buffer(city_geom, max_dist)
@@ -91,12 +91,6 @@ all_cities_buildings <- map_dfr(1:nrow(centers), function(i) {
   b_city
 })
 
-
-
-
-library(sf)
-library(dplyr)
-library(purrr)
 
 # Read city centers
 centers <- st_read("centers_fr.shp", quiet = TRUE)
@@ -154,7 +148,7 @@ all_cities_buildings <- map_dfr(1:nrow(centers), function(i) {
   }
   
 
-  # 2) Load, crop, and combine all matching tiles
+  #   Load, crop, and combine all matching tiles
 
   b_city <- map_dfr(tile_subset, function(ti) {
     
